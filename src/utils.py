@@ -44,6 +44,8 @@ class Cardioid:
         pygame.init()
         screen = pygame.display.set_mode(self.screen_resolution)
         clock = pygame.time.Clock()
+        font = pygame.font.SysFont("Arial", 20)
+        text_surface = font.render("Space: Stop | Q: Quit", True, (255, 255, 255))
         running = True
         while running:
             for event in pygame.event.get():
@@ -52,9 +54,11 @@ class Cardioid:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         self.running = not self.running
+                    if event.key == pygame.K_q:
+                        running = False
 
             screen.fill(self.background)
-            pygame.draw.circle(screen, self.background, self.center, self.radius, 1)
+            pygame.draw.circle(screen, config["line_color"], self.center, self.radius, 2)
 
             for i in range(self.total_points):
                 j = int((i * self.multiplier) % self.total_points)
@@ -66,6 +70,7 @@ class Cardioid:
                     color = self.lines_color
                 pygame.draw.line(screen, color, (p1.x, p1.y), (p2.x, p2.y), 1)
 
+            screen.blit(text_surface, (10, 10))
             pygame.display.flip()
 
             clock.tick(self.frames)
